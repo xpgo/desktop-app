@@ -1826,6 +1826,10 @@ var Pren = {
             else if (keyCode == 39) {
                 me.preOrNext();
             }
+            // F4 to toggle writeable and readonly
+            else if (keyCode == 115) {
+                Note.toggleWriteableAndReadOnly();
+            }
 
             // 各个平台都要
 

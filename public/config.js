@@ -9,7 +9,8 @@ var Config = {
         "export_leanote",
         "export_evernote",
         "langs",
-        "accounts"
+        "accounts",
+        "md_theme"
     ],
     "langs": [
         {
@@ -34,6 +35,7 @@ var Config = {
         }
     ],
     "lang": "",
-    "theme": "",
-    "view": "snippet"
+    "theme": "vegetables",
+    "view": "snippet",
+    "mdTheme": "github2"
 };
