@@ -2625,7 +2625,6 @@ var Attach = {
             var attach = self.attachsMap[attachId];
             var src = EvtService.getAttachLocalUrl(attachId); // + "/attach/download?attachId=" + attachId;
             // http://leanote.com/attach/download?attachId=54f7481638f4112ff000170f
-
             Note.toggleWriteable();
             if (LEA.isMarkdownEditor() && MD) {
                 MD.insertLink(src, attach.Title);
