@@ -16,6 +16,25 @@
                 "reveal": "always",
                 "panel": "shared"
             }
+        },
+        {
+            "label": "Deploy",
+            "type": "shell",
+            "command": "electron-packager",
+            "args": [
+                ".",
+                "--electron-version=1.1.1",
+                "--out=../electron-packager",
+                "--icon=./public/images/logo/leanote2.ico"
+            ],
+            "group": {
+                "kind": "test",
+                "isDefault": true
+            },
+            "presentation": {
+                "reveal": "always",
+                "panel": "shared"
+            }
         }
     ]
 }

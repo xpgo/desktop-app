@@ -1377,7 +1377,7 @@ define('constants',[], function() {
     var constants = {};
     constants.EDITOR_DEFAULT_PADDING = 5;
     constants.fontSize = 16;
-    constants.fontFamily = "Menlo, 'Microsoft Yahei', 'Ubuntu Mono', Consolas, 'Courier New', 'Hiragino Sans GB', 'WenQuanYi Micro Hei', sans-serif;";
+    constants.fontFamily = "Menlo, 'Ubuntu Mono', Consolas, 'Courier New', 'Hiragino Sans GB', 'WenQuanYi Micro Hei', 'Microsoft Yahei', sans-serif;";
     return constants;
 });
 /*!
