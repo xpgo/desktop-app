@@ -625,6 +625,26 @@ $(function() {
             var url = $(this).attr('href');
             if (isOtherSiteUrl(url)) {
                 openExternal(url);
+            } else if (url.startsWith("file:///")) {
+                // added by xiaopan to open attachement directly
+                openExternal(url);
+            } else {
+                // added by xiaopan to open attachement directly
+                var reg = new RegExp("/file/getAttach\\?fileId=([0-9a-zA-Z]{24})", 'g');
+                var result = reg.exec(url);
+                if (result) {
+                    var fileId = result[1];
+                    getAttachPath(fileId, function (ok, toPath, filename) {
+                        // console.log('\n====================================\n');
+                        // console.log(toPath); 
+                        // console.log(filename);
+                        // console.log('\n====================================\n');
+                        if (ok) {
+                            var newURL = "file:///" + toPath;
+                            openExternal(newURL);
+                        }
+                    });
+                }
             }
         }
         return false;

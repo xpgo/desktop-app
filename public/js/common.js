@@ -555,6 +555,12 @@ function insertImage(link) {
 	}
 }
 
+// 获得本地附件地址
+// added by xiaopan
+function getAttachPath(fieldID, callback) {
+	ApiService.getAttachExt(fieldID, callback);
+}
+
 // preview是否为空
 function previewIsEmpty(preview) {
 	if(!preview || preview.substr(0, previewToken.length) == previewToken) {
