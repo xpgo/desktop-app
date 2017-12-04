@@ -2655,6 +2655,13 @@ var Attach = {
                             me.addAttachs(files);
                         }
                     });
+
+                    // ApiService.updateNote(note, function (err, ret) {
+                    //     if (!err) {
+                    //         console.log('\n=============Updated================\n');
+                    //         NoteService.downloadAttachFromServer(Note.curNoteId, myServerFileId, myFileId);
+                    //     }
+                    // });
                 }
             );
         });
@@ -2838,6 +2845,10 @@ var Attach = {
 };
 
 //===============
+
+Note.getAttach = function(attachID) {
+    return Attach.getAttach(attachID);
+}
 
 // 批量操作
 Note.inBatch = false;

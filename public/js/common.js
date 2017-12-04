@@ -557,8 +557,8 @@ function insertImage(link) {
 
 // 获得本地附件地址
 // added by xiaopan
-function getAttachPath(fieldID, callback) {
-	ApiService.getAttachExt(fieldID, callback);
+function getAttachLocalPath(noteId, fieldId, callback) {
+	ApiService.getAttachLocalPath(noteId, fieldId, callback);
 }
 
 // preview是否为空

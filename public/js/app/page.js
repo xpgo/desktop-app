@@ -633,14 +633,11 @@ $(function() {
                 var reg = new RegExp("/file/getAttach\\?fileId=([0-9a-zA-Z]{24})", 'g');
                 var result = reg.exec(url);
                 if (result) {
+                    var curNoteId = Note.curNoteId;
                     var fileId = result[1];
-                    getAttachPath(fileId, function (ok, toPath, filename) {
-                        // console.log('\n====================================\n');
-                        // console.log(toPath); 
-                        // console.log(filename);
-                        // console.log('\n====================================\n');
-                        if (ok) {
-                            var newURL = "file:///" + toPath;
+                    getAttachLocalPath(curNoteId, fileId, function (filePath) {
+                        if (filePath) {
+                            var newURL = "file:///" + filePath;
                             openExternal(newURL);
                         }
                     });
@@ -653,7 +650,6 @@ $(function() {
     $('#preview-contents').on('click', 'a', function(e) {
         e.preventDefault();
         var url = $(this).attr('href');
-        console.log('\n-------------\n' + url + '\n----------------\n');
         if (isOtherSiteUrl(url)) {
             openExternal(url);
         } else if (url.startsWith("file:///")) {
@@ -664,14 +660,11 @@ $(function() {
             var reg = new RegExp("/file/getAttach\\?fileId=([0-9a-zA-Z]{24})", 'g');
             var result = reg.exec(url);
             if (result) {
+                var curNoteId = Note.curNoteId;
                 var fileId = result[1];
-                getAttachPath(fileId, function (ok, toPath, filename) {
-                    // console.log('\n====================================\n');
-                    // console.log(toPath); 
-                    // console.log(filename);
-                    // console.log('\n====================================\n');
-                    if (ok) {
-                        var newURL = "file:///" + toPath;
+                getAttachLocalPath(curNoteId, fileId, function (filePath) {
+                    if (filePath) {
+                        var newURL = "file:///" + filePath;
                         openExternal(newURL);
                     }
                 });
