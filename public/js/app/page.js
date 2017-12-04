@@ -1840,6 +1840,13 @@ var Pren = {
         });
 
         // 全局事件
+        // added by xiaopan
+        // double click to edit
+        $("body").on('dblclick', function (e) {
+            if (LEA.readOnly) {
+                Note.toggleWriteable(true);
+            }
+        });
         // Esc, <- ->
         $("body").on('keydown', function(e) {
             var keyCode = e.keyCode;
