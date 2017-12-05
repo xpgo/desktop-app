@@ -1839,14 +1839,16 @@ var Pren = {
             }
         });
 
-        // 全局事件
         // added by xiaopan
         // double click to edit
-        $("body").on('dblclick', function (e) {
+        $("#mdEditor").on('dblclick', function (e) {
+            console.log('\n------->>>> double\n');
             if (LEA.readOnly) {
                 Note.toggleWriteable(true);
             }
         });
+
+        // 全局事件
         // Esc, <- ->
         $("body").on('keydown', function(e) {
             var keyCode = e.keyCode;
