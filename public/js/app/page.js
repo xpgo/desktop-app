@@ -1842,7 +1842,13 @@ var Pren = {
         // added by xiaopan
         // double click to edit
         $("#mdEditor").on('dblclick', function (e) {
-            console.log('\n------->>>> double\n');
+            // console.log('\n------->>>> double\n');
+            if (LEA.readOnly) {
+                Note.toggleWriteable(true);
+            }
+        });
+        $("#editorContent").on('dblclick', function (e) {
+            // console.log('\n------->>>> double\n');
             if (LEA.readOnly) {
                 Note.toggleWriteable(true);
             }
