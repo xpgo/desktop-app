@@ -2,12 +2,24 @@
 
 [![Gitter](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/leanote/desktop-app?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
 
-Use Electron(atom-shell) to create leanote desktop app.
+**This the Leanote desktop app modified by xpgo.** Thanks the [Leanote Team](http://app.leanote.com) for sharing such wouderful app.
 
-![preview.png](preview.png "")
+The preview of the modified version of Leanote:
+![previewBlue.png](previewBlue.png "")
+
+## Extended features based on the original version
+- Added blue_pure theme (see the preview)
+- Added githubx markdown theme (see the preview)
+- Increased the whole font size
+- Import wiz notes (为知笔记) correctlly, even with attachments
+- Open attachment link directly in the note
+- Fixed image display problems (for those who deploy leanote server themselves)
+- Upload image and attachment without size limits
+- Double click or use `F4` to enter edit mode
 
 ## Download
-Please see http://app.leanote.com
+Download the code and use electron to run this app.
+**All the new features exteded by xpgo are currently available only in the dev braunch.**
 
 ## How to develop it
 
