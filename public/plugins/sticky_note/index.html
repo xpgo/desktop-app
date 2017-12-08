@@ -131,7 +131,8 @@
             plugins: [
                 "link image lists hr", "paste",
                 "searchreplace tabfocus",
-                "table directionality textcolor"
+                "table directionality textcolor",
+                "insertdatetime"
             ], // nonbreaking
             width: '100%',
             height: '100%',
@@ -156,6 +157,12 @@
                     padding: none;
                     margin: 0px;
                 }`,
+            init_instance_callback: function (editor) {
+                // Shortcuts and useful things go here.
+                editor.shortcuts.add("ctrl+h", "Horizontal Rule", "InsertHorizontalRule"),
+                editor.shortcuts.add("ctrl+d", "Insert Date", "mceInsertDate"),
+                editor.shortcuts.add("ctrl+t", "Insert Time", "mceInsertTime")
+            }
         });
     </script>
 </head>

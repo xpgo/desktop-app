@@ -103,6 +103,14 @@ define(function () {
                             myTitle.textContent = arg.title;
                             tinymce.activeEditor.setContent(arg.content);
                             tinymce.isNotDirty = 1;
+                            tinymce.activeEditor.shortcuts.add("ctrl+s", "Save Content", function() {
+                                var sendData = {
+                                    winContentId: <CID>,
+                                    htmlContents: tinymce.activeEditor.getContent(),
+                                    isDirty: tinymce.activeEditor.isDirty(),
+                                };
+                                ipcRenderer.send('need-save', sendData);
+                            });
                         });
                         let mainValue = ipcRenderer.send('init-done', <CID>);
                         `;
@@ -168,14 +176,14 @@ define(function () {
                     // Print 1
                     var sticyData = me._activeSticky[arg.winContentId];
                     if (sticyData) {
-                        if (arg.isDirty) {
-                            var pNote = sticyData.note;
-                            pNote.Content = arg.htmlContents;
-                            Api.noteService.updateNoteOrContent(pNote, function (insertedNote) {
-                                Api.note.setNoteDirty(pNote.NoteId, true);
-                                return true;
-                            }, false); // the last param to history
-                        }
+                        //if (arg.isDirty) {
+                        var pNote = sticyData.note;
+                        pNote.Content = arg.htmlContents;
+                        Api.noteService.updateNoteOrContent(pNote, function (insertedNote) {
+                            Api.note.setNoteDirty(pNote.NoteId, true);
+                            return true;
+                        }, true); // the last param to history
+                        //}
 
                         // mark for delete
                         me._activeSticky[arg.winContentId] = null;
@@ -196,6 +204,20 @@ define(function () {
                         content: myNoteData.Content,
                     };
                     myWebContent.send('content-set', noteData);
+                });
+
+                ipc.on('need-save', (event, arg) => {
+                    // sent
+                    var sticyData = me._activeSticky[arg.winContentId];
+                    if (sticyData) {
+                        //if (arg.isDirty) {
+                        var pNote = sticyData.note;
+                        pNote.Content = arg.htmlContents;
+                        Api.noteService.updateNoteOrContent(pNote, function (insertedNote) {
+                            Api.note.setNoteDirty(pNote.NoteId, true);
+                            return true;
+                        }, false); // the last param to history
+                    }
                 });
 
                 // now show the window

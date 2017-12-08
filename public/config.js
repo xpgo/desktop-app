@@ -38,5 +38,5 @@ var Config = {
     "lang": "",
     "theme": "blue_pure",
     "view": "snippet",
-    "mdTheme": "github2"
+    "mdTheme": "githubx"
 };
