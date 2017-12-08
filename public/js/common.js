@@ -1779,6 +1779,11 @@ var Notify = {
 // 关闭当前窗口
 var onClose = function(afterFunc) {
 	console.log('on close');
+
+	// send close message
+	var mainWin = Api.gui.getCurrentWindow();
+	mainWin.send('commonOnClose', 1);
+
 	try {
 	    SyncService.stop();
 	    // 先保存之前改变的

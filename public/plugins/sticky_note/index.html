@@ -44,6 +44,7 @@
             transform: translate(-10px, -12px);
         }
 
+        #color-btn,
         #pin-btn,
         #min-btn,
         #max-btn,
@@ -53,6 +54,11 @@
             cursor: pointer;
             width: 24px;
             height: 24px;
+        }
+
+        #color-btn {
+            background: url(./image/btn-color1.png) no-repeat;
+            background-size: 100%;
         }
 
         #pin-btn {
@@ -76,6 +82,7 @@
         }
 
         /*-----------for tinymce-----------*/
+
         #editor-wrap {
             width: 100%;
             height: 100%;
@@ -101,9 +108,9 @@
             left: 0px;
             right: 0px;
         }
- 
+
         /*Editing area*/
- 
+
         .mce-container-body .mce-edit-area {
             position: absolute;
             top: 0px;
@@ -111,16 +118,15 @@
             left: 0px;
             right: 0px;
         }
- 
+
         /*Footer*/
- 
+
         .mce-tinymce .mce-statusbar {
             position: absolute;
             bottom: 0px;
             left: 0px;
             right: 0px;
         }
-
     </style>
     <script src='../../tinymce/tinymce.min.js'></script>
     <script src='../../js/jquery-1.9.0.min.js'></script>
@@ -143,13 +149,13 @@
             toolbar_items_size: 'small',
             // toolbar: "formatselect | forecolor backcolor | outdent indent blockquote | link unlink image | table hr | subscript superscript | searchreplace",
             paste_data_images: true,
-            paste_auto_cleanup_on_paste : true,
+            paste_auto_cleanup_on_paste: true,
             url_converter: false,
             content_style: `
                 .mce-content-body {
                     font-size:18px;
                     font-family: Consolas, 'Microsoft YaHei', monospace, Arial, sans-serif;
-                    background:#FDFCBC;
+                    background: '#FDFCBC';
                     color:#000;
                     overflow-y: atuo;
                 }
@@ -160,8 +166,8 @@
             init_instance_callback: function (editor) {
                 // Shortcuts and useful things go here.
                 editor.shortcuts.add("ctrl+h", "Horizontal Rule", "InsertHorizontalRule"),
-                editor.shortcuts.add("ctrl+d", "Insert Date", "mceInsertDate"),
-                editor.shortcuts.add("ctrl+t", "Insert Time", "mceInsertTime")
+                    editor.shortcuts.add("ctrl+d", "Insert Date", "mceInsertDate"),
+                    editor.shortcuts.add("ctrl+t", "Insert Time", "mceInsertTime")
             }
         });
     </script>
@@ -171,6 +177,7 @@
     <div id="title-bar">
         <div id="title">My Life For The Code</div>
         <div id="title-bar-btns">
+            <button id="color-btn"></button>
             <button id="pin-btn"></button>
             <button id="min-btn"></button>
             <button id="max-btn"></button>

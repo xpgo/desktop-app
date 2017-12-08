@@ -52,19 +52,20 @@ define(function () {
 
                 // collect
                 var winContent = me.childWindow.webContents;
+                var winContentId = winContent.id;
                 var stickyData = {
                     window: me.childWindow,
                     webContents: winContent,
                     initialized: false,
                     note: sNote
                 };
-                me._activeSticky[winContent.id] = stickyData;
+                me._activeSticky[winContentId] = stickyData;
                 me._stickyCounter = me._stickyCounter + 1;
 
                 // initialize window
                 winContent.once('dom-ready', () => {
-                    var sticyData = me._activeSticky[winContent.id];
-                    if (sticyData.initialized) {
+                    var stickyData = me._activeSticky[winContentId];
+                    if (stickyData.initialized) {
                         return;
                     }
                     // set the button functions
@@ -93,12 +94,22 @@ define(function () {
                             var window = BrowserWindow.getFocusedWindow();
                             window.setAlwaysOnTop(!window.isAlwaysOnTop());
                         }); 
+                        var color_clicks = 0;
+                        document.getElementById("color-btn").addEventListener("click", function (e) {
+                            color_clicks = color_clicks + 1;
+                            var myColors1 = ['#F0EFB2', '#C3EAF7', '#BFF6BA', '#EFBDEF', '#CFC7F2'];
+                            var myColors2 = ['#FDFCBC', '#D2F0F9', '#CBFEC5', '#F4CBF4', '#D9D5FE'];
+                            var iSet = color_clicks % myColors1.length;
+                            document.getElementById("title-bar").style.backgroundColor = myColors1[iSet];
+                            document.getElementById("editor-wrap").style.backgroundColor = myColors2[iSet];
+                            tinymce.activeEditor.contentDocument.body.style.backgroundColor = myColors2[iSet];
+                        }); 
                     `);
 
                     // set the lisener
                     var jsToExec = `
                         var {ipcRenderer, remote} = require('electron'); 
-                        ipcRenderer.on('content-set', (event, arg) => {  
+                        ipcRenderer.on('content-set-<CID>', (event, arg) => {  
                             var myTitle = document.getElementById("title");
                             myTitle.textContent = arg.title;
                             tinymce.activeEditor.setContent(arg.content);
@@ -109,17 +120,17 @@ define(function () {
                                     htmlContents: tinymce.activeEditor.getContent(),
                                     isDirty: tinymce.activeEditor.isDirty(),
                                 };
-                                ipcRenderer.send('need-save', sendData);
+                                ipcRenderer.send('need-save-<CID>', sendData);
                             });
                         });
-                        let mainValue = ipcRenderer.send('init-done', <CID>);
+                        let mainValue = ipcRenderer.send('init-done-<CID>', <CID>);
                         `;
                     jsToExec = jsToExec
-                        .replace(/<CID>/g, winContent.id.toString());
+                        .replace(/<CID>/g, winContentId.toString());
                     winContent.executeJavaScript(jsToExec,
                         function (result) {
                         });
-                    me._activeSticky[winContent.id].initialized = true;
+                    me._activeSticky[winContentId].initialized = true;
                 });
 
                 // window is closed
@@ -130,14 +141,15 @@ define(function () {
                         var {ipcRenderer, remote} = require('electron'); 
                         var myContent = document.getElementById("myContent");
                         var sendData = {
-                            winContentId: <CONTENT_ID>,
+                            winContentId: <CID>,
                             htmlContents: tinymce.activeEditor.getContent(),
                             isDirty: tinymce.activeEditor.isDirty(),
                         };
-                        ipcRenderer.send('win-closed', sendData);
+                        ipcRenderer.send('win-closed-<CID>', sendData);
+                        remote.getCurrentWindow().removeAllListeners();
                         `;
                     jsToExec = jsToExec
-                        .replace("<CONTENT_ID>", winContent.id.toString());
+                        .replace(/<CID>/g, winContentId.toString());
                     winContent.executeJavaScript(jsToExec,
                         function (result) {
                             // console.log(result)
@@ -172,12 +184,13 @@ define(function () {
 
                 // communications
                 var ipc = remote.ipcMain;
-                ipc.on('win-closed', (event, arg) => {
+                var cIdStr = winContentId.toString();
+                ipc.on('win-closed-' + cIdStr, (event, arg) => {
                     // Print 1
-                    var sticyData = me._activeSticky[arg.winContentId];
-                    if (sticyData) {
+                    var stickyData = me._activeSticky[arg.winContentId];
+                    if (stickyData) {
                         //if (arg.isDirty) {
-                        var pNote = sticyData.note;
+                        var pNote = stickyData.note;
                         pNote.Content = arg.htmlContents;
                         Api.noteService.updateNoteOrContent(pNote, function (insertedNote) {
                             Api.note.setNoteDirty(pNote.NoteId, true);
@@ -193,25 +206,26 @@ define(function () {
                     // http://electron.rocks/different-ways-to-communicate-between-main-and-renderer-process/
                 });
 
-                ipc.on('init-done', (event, arg) => {
+                ipc.on('init-done-' + cIdStr, (event, arg) => {
                     // sent
                     var contentId = arg;
-                    var sticyData = me._activeSticky[contentId];
-                    var myWebContent = sticyData.webContents;
-                    var myNoteData = sticyData.note;
+                    var stickyData = me._activeSticky[contentId];
+                    var myWebContent = stickyData.webContents;
+                    var myNoteData = stickyData.note;
                     var noteData = {
                         title: myNoteData.Title,
                         content: myNoteData.Content,
                     };
-                    myWebContent.send('content-set', noteData);
+                    var cidStrLocal = contentId.toString();
+                    myWebContent.send('content-set-' + cidStrLocal, noteData);
                 });
 
-                ipc.on('need-save', (event, arg) => {
+                ipc.on('need-save-' + cIdStr, (event, arg) => {
                     // sent
-                    var sticyData = me._activeSticky[arg.winContentId];
-                    if (sticyData) {
+                    var stickyData = me._activeSticky[arg.winContentId];
+                    if (stickyData) {
                         //if (arg.isDirty) {
-                        var pNote = sticyData.note;
+                        var pNote = stickyData.note;
                         pNote.Content = arg.htmlContents;
                         Api.noteService.updateNoteOrContent(pNote, function (insertedNote) {
                             Api.note.setNoteDirty(pNote.NoteId, true);
@@ -331,6 +345,25 @@ define(function () {
                     }
                 })()
             };
+
+            // 
+            const { ipcRenderer } = require('electron');
+            ipc = ipcRenderer;
+            ipc.on('commonOnClose', function (event, arg) {
+                console.log('\n---->>>>\n');
+                for (var key in me._activeSticky) {
+                    var zVal = me._activeSticky[key];
+                    if (zVal) {
+                        try {
+                            zVal.window.removeAllListeners();
+                            zVal.window.close();
+                            me._activeSticky[key] = null;
+                        } catch (error) {
+                            console.log('Failed to destroy window.');
+                        }
+                    }
+                }
+            });
 
             // 设置
             Api.addUserNoteMenu(menu);
