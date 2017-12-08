@@ -1,0 +1,40 @@
+{
+    // See https://go.microsoft.com/fwlink/?LinkId=733558
+    // for the documentation about the tasks.json format
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "Run Main",
+            "type": "shell",
+            "command": "electron",
+            "args": ["."],
+            "group": {
+                "kind": "test",
+                "isDefault": true
+            },
+            "presentation": {
+                "reveal": "always",
+                "panel": "shared"
+            }
+        },
+        {
+            "label": "Deploy",
+            "type": "shell",
+            "command": "electron-packager",
+            "args": [
+                ".",
+                "--electron-version=1.1.1",
+                "--out=../electron-packager",
+                "--icon=./public/images/logo/leanote2.ico"
+            ],
+            "group": {
+                "kind": "test",
+                "isDefault": true
+            },
+            "presentation": {
+                "reveal": "always",
+                "panel": "shared"
+            }
+        }
+    ]
+}

@@ -555,6 +555,12 @@ function insertImage(link) {
 	}
 }
 
+// 获得本地附件地址
+// added by xiaopan
+function getAttachLocalPath(noteId, fieldId, callback) {
+	ApiService.getAttachLocalPath(noteId, fieldId, callback);
+}
+
 // preview是否为空
 function previewIsEmpty(preview) {
 	if(!preview || preview.substr(0, previewToken.length) == previewToken) {
@@ -1773,6 +1779,11 @@ var Notify = {
 // 关闭当前窗口
 var onClose = function(afterFunc) {
 	console.log('on close');
+
+	// send close message
+	var mainWin = Api.gui.getCurrentWindow();
+	mainWin.send('commonOnClose', 1);
+
 	try {
 	    SyncService.stop();
 	    // 先保存之前改变的

@@ -625,6 +625,23 @@ $(function() {
             var url = $(this).attr('href');
             if (isOtherSiteUrl(url)) {
                 openExternal(url);
+            } else if (url.startsWith("file:///")) {
+                // added by xiaopan to open attachement directly
+                openExternal(url);
+            } else {
+                // added by xiaopan to open attachement directly
+                var reg = new RegExp("/file/getAttach\\?fileId=([0-9a-zA-Z]{24})", 'g');
+                var result = reg.exec(url);
+                if (result) {
+                    var curNoteId = Note.curNoteId;
+                    var fileId = result[1];
+                    getAttachLocalPath(curNoteId, fileId, function (filePath) {
+                        if (filePath) {
+                            var newURL = "file:///" + filePath;
+                            openExternal(newURL);
+                        }
+                    });
+                }
             }
         }
         return false;
@@ -635,6 +652,23 @@ $(function() {
         var url = $(this).attr('href');
         if (isOtherSiteUrl(url)) {
             openExternal(url);
+        } else if (url.startsWith("file:///")) {
+            // added by xiaopan to open attachement directly
+            openExternal(url);
+        } else {
+            // added by xiaopan to open attachement directly
+            var reg = new RegExp("/file/getAttach\\?fileId=([0-9a-zA-Z]{24})", 'g');
+            var result = reg.exec(url);
+            if (result) {
+                var curNoteId = Note.curNoteId;
+                var fileId = result[1];
+                getAttachLocalPath(curNoteId, fileId, function (filePath) {
+                    if (filePath) {
+                        var newURL = "file:///" + filePath;
+                        openExternal(newURL);
+                    }
+                });
+            }
         }
     });
 
@@ -1805,6 +1839,21 @@ var Pren = {
             }
         });
 
+        // added by xiaopan
+        // double click to edit
+        $("#mdEditor").on('dblclick', function (e) {
+            // console.log('\n------->>>> double\n');
+            if (LEA.readOnly) {
+                Note.toggleWriteable(true);
+            }
+        });
+        $("#editorContent").on('dblclick', function (e) {
+            // console.log('\n------->>>> double\n');
+            if (LEA.readOnly) {
+                Note.toggleWriteable(true);
+            }
+        });
+
         // 全局事件
         // Esc, <- ->
         $("body").on('keydown', function(e) {
@@ -1825,6 +1874,10 @@ var Pren = {
             // -->
             else if (keyCode == 39) {
                 me.preOrNext();
+            }
+            // F4 to toggle writeable and readonly
+            else if (keyCode == 115) {
+                Note.toggleWriteableAndReadOnly();
             }
 
             // 各个平台都要

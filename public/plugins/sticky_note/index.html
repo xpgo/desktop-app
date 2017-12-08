@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <style>
+        * {
+            margin: 0px;
+            padding: 0px;
+        }
+
+        html,
+        body {
+            width: 100%;
+            height: 100%;
+            font-size: 17px;
+            overflow: hidden;
+            font-family: 'Microsoft YaHei', 'Open Sans', 'Helvetica Neue', Arial, 'Hiragino Sans GB', 'WenQuanYi Micro Hei', "WenQuanYi Micro Hei"
+        }
+
+        #title-bar {
+            -webkit-app-region: drag;
+            width: 100%;
+            height: 30px;
+            background-color: #F0EFB2;
+            vertical-align: middle;
+            position: relative;
+        }
+
+        #title {
+            position: absolute;
+            top: 50%;
+            transform: translate(10px, -50%);
+            font-weight: bold;
+        }
+
+        /*-----------for title-bar-btns -----------*/
+
+        #title-bar-btns {
+            -webkit-app-region: no-drag;
+            position: absolute;
+            top: 50%;
+            right: 0%;
+            transform: translate(-10px, -12px);
+        }
+
+        #color-btn,
+        #pin-btn,
+        #min-btn,
+        #max-btn,
+        #close-btn {
+            background: transparent;
+            border: none !important;
+            cursor: pointer;
+            width: 24px;
+            height: 24px;
+        }
+
+        #color-btn {
+            background: url(./image/btn-color1.png) no-repeat;
+            background-size: 100%;
+        }
+
+        #pin-btn {
+            background: url(./image/btn-pin1.png) no-repeat;
+            background-size: 100%;
+        }
+
+        #min-btn {
+            background: url(./image/btn-min1.png) no-repeat;
+            background-size: 100%;
+        }
+
+        #max-btn {
+            background: url(./image/btn-max1.png) no-repeat;
+            background-size: 100%;
+        }
+
+        #close-btn {
+            background: url(./image/btn-close1.png) no-repeat;
+            background-size: 100%;
+        }
+
+        /*-----------for tinymce-----------*/
+
+        #editor-wrap {
+            width: 100%;
+            height: 100%;
+            background-color: #FDFCBC;
+            position: relative;
+        }
+
+        /*Container, container body, iframe*/
+
+        .mce-tinymce,
+        .mce-container-body,
+        #code_ifr {
+            min-height: calc(100% - 30px) !important;
+            border: 0px !important;
+            width: calc(100% - 0px) !important;
+        }
+
+        /*Container body*/
+
+        .mce-container-body {
+            position: absolute;
+            bottom: 0px;
+            left: 0px;
+            right: 0px;
+        }
+
+        /*Editing area*/
+
+        .mce-container-body .mce-edit-area {
+            position: absolute;
+            top: 0px;
+            bottom: 0px;
+            left: 0px;
+            right: 0px;
+        }
+
+        /*Footer*/
+
+        .mce-tinymce .mce-statusbar {
+            position: absolute;
+            bottom: 0px;
+            left: 0px;
+            right: 0px;
+        }
+    </style>
+    <script src='../../tinymce/tinymce.min.js'></script>
+    <script src='../../js/jquery-1.9.0.min.js'></script>
+    <script>
+        tinymce.init({
+            selector: 'div.tinymce',
+            theme: 'modern',
+            plugins: [
+                "link image lists hr", "paste",
+                "searchreplace tabfocus",
+                "table directionality textcolor",
+                "insertdatetime"
+            ], // nonbreaking
+            width: '100%',
+            height: '100%',
+            menubar: false,
+            statusbar: false,
+            toolbar: false,
+            forced_root_block: false,
+            toolbar_items_size: 'small',
+            // toolbar: "formatselect | forecolor backcolor | outdent indent blockquote | link unlink image | table hr | subscript superscript | searchreplace",
+            paste_data_images: true,
+            paste_auto_cleanup_on_paste: true,
+            url_converter: false,
+            content_style: `
+                .mce-content-body {
+                    font-size:18px;
+                    font-family: Consolas, 'Microsoft YaHei', monospace, Arial, sans-serif;
+                    background:#FDFCBC;
+                    color:#000;
+                    overflow-y: atuo;
+                }
+                p {
+                    padding: none;
+                    margin: 0px;
+                }`,
+            init_instance_callback: function (editor) {
+                // Shortcuts and useful things go here.
+                editor.shortcuts.add("ctrl+h", "Horizontal Rule", "InsertHorizontalRule"),
+                    editor.shortcuts.add("ctrl+d", "Insert Date", "mceInsertDate"),
+                    editor.shortcuts.add("ctrl+t", "Insert Time", "mceInsertTime")
+            }
+        });
+    </script>
+</head>
+
+<body>
+    <div id="title-bar">
+        <div id="title">My Life For The Code</div>
+        <div id="title-bar-btns">
+            <button id="color-btn"></button>
+            <button id="pin-btn"></button>
+            <button id="min-btn"></button>
+            <button id="max-btn"></button>
+            <button id="close-btn"></button>
+        </div>
+    </div>
+    <div id="editor-wrap">
+        <div id="myEditor" class="tinymce">
+            <div id="myContent">
+                <div></div>
+                Have fun!
+                <br> int main(int argc, char* argv)
+                <br> hello world!
+                <br> int main(int argc, char* argv)
+                <br> hello world!
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

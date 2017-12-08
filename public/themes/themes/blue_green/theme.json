@@ -1,0 +1,22 @@
+{
+    "author": "life",
+    "authorUrl": "http://life.leanote.com",
+    "desc": "you know",
+    "langs": {
+        "en-us": {
+            "name": "Pure Green"
+        },
+        "de-de": {
+            "name": "Pure Green"
+        },
+        "zh-cn": {
+            "name": "纯绿"
+        },
+        "zh-hk": {
+            "name": "纯绿"
+        },
+        "ja-jp": {
+            "name": "纯绿い"
+        }
+    }
+}
