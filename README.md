@@ -2,21 +2,22 @@
 
 [![Gitter](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/leanote/desktop-app?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
 
-**This the Leanote desktop app modified by xpgo.** Thanks the [Leanote Team](http://app.leanote.com) for sharing such wouderful app.
+**The Leanote desktop app modified by xpgo.** 
+Thanks the [Leanote Team](http://app.leanote.com) for sharing such wouderful app.
 
-The preview of the modified version of Leanote:
+Preview of the modified version of Leanote:
 ![previewBlue.png](previewBlue.png "")
 
 ## Extended features based on the original version
-- Added blue_pure theme (see the preview)
-- Added githubx markdown theme (see the preview)
+- Added blue_pure, green_pure and grey_pure themes (see the preview)
+- Added the githubx markdown theme (see the preview)
 - Increased the whole font size
 - Import wiz notes (为知笔记) correctlly, even with attachments
 - Open attachment link directly in the note
 - Fixed image display problems (for those who deploy leanote server themselves)
-- Upload image and attachment without size limits
+- Upload image and attachment without size limits (Need to modify server app)
 - Double click or use `F4` to enter edit mode
-- Sticky note. You can open an HTML note in a separated window (sticky note like), so you can use it to collect temporary text. The content in the sticky note will be saved when it is closed (or use `ctrl+s` to save it). Moreover, you can customize shortkeys in the sticky note to do more, i.e. insert data, time, horizontal rule and so on. 
+- Sticky note. An HTML note can be opened in a separated window (sticky note like), so you can use it to collect temporary text. The content in the sticky note will be saved when it is closed (or use `ctrl+s` to save it). Moreover, you can customize shortkeys in the sticky note to do more, i.e. insert data, time, horizontal rule and so on. 
 
 ## Download
 Download the code and use electron to run this app.
