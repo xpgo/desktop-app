@@ -2463,6 +2463,33 @@ Note.initContextmenu = function() {
         this.menu.append(this.move);
         this.menu.append(this.copy);
 
+        // user note menu
+        var userNoteMenus = Api.getUserNoteMenus() || [];
+        for (var i = 0; i < userNoteMenus.length; ++i) {
+            if (i == 0) {
+                this.menu.append(gui.getSeparatorMenu());
+            }
+            // make menus
+            var menu = userNoteMenus[i];
+            var clickBac = menu.click;
+            var menuItem = new gui.MenuItem({
+                label: menu.label,
+                click: function (e) {
+                    var noteId = null;
+                    if (Note.inBatch) {
+                        var noteIds = Note.getBatchNoteIds();
+                        noteId = noteIds[0];
+                    } else {
+                        noteId = $(self.target).attr('noteId');
+                    }
+                    var note = Note.getNote(noteId);
+                    clickBac && clickBac(note);
+                }
+            });
+            userNoteMenus[i].menu = menuItem;
+            this.menu.append(menuItem);
+        }
+
         // 导出
         var exportsSubMenus = new gui.Menu();
         var exportMenus = Api.getExportMenus() || [];
@@ -2513,6 +2540,12 @@ Note.initContextmenu = function() {
                 noteIds = Note.getBatchNoteIds();
             } else {
                 noteIds = [$(target).attr("noteId")];
+            }
+
+            // user note menus
+            var note0 = Note.getNote(noteIds[0]);
+            for (var i = 0; i < userNoteMenus.length; ++i) {
+                userNoteMenus[i].menu.enabled = userNoteMenus[i].enabled(note0);
             }
 
             // 导出的enabled

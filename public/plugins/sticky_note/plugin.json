@@ -1,0 +1,28 @@
+{
+    "name": "Sticky Note",
+    "desc": "Add a sticky note.",
+    "author": "P. Xiao",
+    "authorUrl": "http://note.xscale.cn/blog/xpgo",
+    "langs": {
+        "en-us": {
+            "pluginName": "Sticky Note",
+            "pluginDesc": ""
+        },
+        "de-de": {
+            "pluginName": "Haftnotiz",
+            "pluginDesc": ""
+        },
+        "zh-cn": {
+            "pluginName": "便箋",
+            "pluginDesc": ""
+        },
+        "zh-hk": {
+            "pluginName": "便箋",
+            "pluginDesc": ""
+        },
+        "ja-jp": {
+            "pluginName": "付箋",
+            "pluginDesc": ""
+        }
+    }
+}

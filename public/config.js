@@ -10,7 +10,8 @@ var Config = {
         "export_evernote",
         "langs",
         "accounts",
-        "md_theme"
+        "md_theme",
+        "sticky_note"
     ],
     "langs": [
         {
@@ -35,7 +36,7 @@ var Config = {
         }
     ],
     "lang": "",
-    "theme": "vegetables",
+    "theme": "blue_pure",
     "view": "snippet",
     "mdTheme": "github2"
 };
