@@ -2813,6 +2813,9 @@ var Attach = {
     // 添加附件, attachment_upload上传调用
     addAttach: function(attachInfo) {
         var self = this;
+        if (!self.loadedNoteAttachs[attachInfo.NoteId]) {
+            self.renderAttachs(attachInfo.NoteId);
+        }
         self.loadedNoteAttachs[attachInfo.NoteId].push(attachInfo);
         self.renderAttachs(attachInfo.NoteId);
         // TOOD 更新Note表
@@ -2881,6 +2884,10 @@ var Attach = {
 
 Note.getAttach = function(attachID) {
     return Attach.getAttach(attachID);
+}
+
+Note.addAttach = function (attachInfo) {
+    return Attach.addAttach(attachInfo);
 }
 
 // 批量操作
