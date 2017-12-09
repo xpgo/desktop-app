@@ -35,8 +35,9 @@ var Config = {
             "name": "日本語"
         }
     ],
-    "lang": "",
+    "lang": "zh-cn",
     "theme": "blue_pure",
     "view": "snippet",
-    "mdTheme": "githubx"
+    "mdTheme": "githubx",
+    "dataPath": "D:/ProgramData/Leanote/dataDev"
 };
