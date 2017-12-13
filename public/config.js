@@ -36,7 +36,7 @@ var Config = {
         }
     ],
     "lang": "zh-cn",
-    "theme": "blue_pure",
+    "theme": "pure_blue",
     "view": "snippet",
     "mdTheme": "githubx"
 };

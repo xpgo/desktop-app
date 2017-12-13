@@ -646,8 +646,8 @@ $(function () {
                 var reg = new RegExp("/note/gotoNote\\?id=([0-9a-zA-Z]{24})", 'g');
                 var result = reg.exec(url);
                 if (result) {
-                    var noteId = result[1];
-                    Note.openNote(noteId);
+                    var serverNoteId = result[1];
+                    Note.openNoteByServerNoteId(serverNoteId);
                 }
                 // openExternal(url);
             } else {
@@ -666,7 +666,7 @@ $(function () {
     $('#preview-contents').on('click', 'a', function (e) {
         e.preventDefault();
         var url = $(this).attr('href');
-        console.log(url);
+        // console.log(url);
         if (isOtherSiteUrl(url)) {
             openExternal(url);
         } else if (url.startsWith("file:///")) {
@@ -677,8 +677,8 @@ $(function () {
             var reg = new RegExp("/note/gotoNote\\?id=([0-9a-zA-Z]{24})", 'g');
             var result = reg.exec(url);
             if (result) {
-                var noteId = result[1];
-                Note.openNote(noteId);
+                var serverNoteId = result[1];
+                Note.openNoteByServerNoteId(serverNoteId);
             }
             // openExternal(url);
         } else {

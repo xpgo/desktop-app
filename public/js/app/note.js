@@ -762,7 +762,7 @@ Note.contentAjax = null;
 Note.contentAjaxSeq = 1;
 Note.inChangeNoteId = '';
 Note.setCurNoteId = function(noteId) {
-    console.trace('setCurNoteId: ' + noteId);
+    // console.trace('setCurNoteId: ' + noteId);
     Note.curNoteId = noteId;
     Note.inChangeNoteId = '';
     Note.openHistoryNew(noteId);
@@ -1609,8 +1609,8 @@ Note.openHistoryNew = function (noteId) {
     } else {
         Note.openHistoryNav = false;
     }
-    console.log(Note.openHistory.length);
-    console.log(Note.openHistoryPos);
+    // console.log(Note.openHistory.length);
+    // console.log(Note.openHistoryPos);
     // disable sth
     var isDiabled = (Note.openHistoryPos < 1);
     if (isDiabled) {
@@ -1644,6 +1644,15 @@ Note.openHistoryNext = function () {
         Note.openHistoryPos = newPos;
         Note.openNote(noteId);
     }
+}
+
+Note.openNoteByServerNoteId = function (serverNoteId) {
+    // console.log(serverNoteId);
+    NoteService.getNoteIdByServerNoteId(serverNoteId, function (noteId) {
+        if (noteId) {
+            Note.openNote(noteId);
+        }
+    });
 }
 
 // xpgo
@@ -2529,8 +2538,12 @@ Note.initContextmenu = function() {
                 } else {
                     noteId = $(self.target).attr('noteId');
                 }
-                var linkStr = "leanote://note/gotoNote?id=" + noteId;
-                clipboard.writeText(linkStr);
+                NoteService.getServerNoteIdByNoteId(noteId, function (serverNoteId) {
+                    if (serverNoteId) {
+                        var linkStr = "leanote://note/gotoNote?id=" + serverNoteId;
+                        clipboard.writeText(linkStr);
+                    }
+                });
             }
         });
 
