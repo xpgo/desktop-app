@@ -29,6 +29,7 @@
   "cooperation": "協創",
   "cooperationInfo": "友達と共有して、一緒に編集してください。",
   "Copy": "コピー",
+  "copyInternalLink": "内部リンクをコピーする",
   "copyFailed": "申し訳ございません、コピーが失敗した、自分でコピーしてください",
   "copySuccess": "コピーした",
   "copyToMyNotebook": "自分のメートに保存する",

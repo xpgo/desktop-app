@@ -29,6 +29,7 @@
     "cooperation" : "Zusammenarbeit",
     "cooperationInfo" : "Arbeiten Sie mit anderen zusammen und teilen Sie ihr Wissen.",
     "Copy" : "Kopieren",
+    "copyInternalLink": "Kopieren Sie den internen Link",
     "copyFailed" : "Es tut mir Leid, Replikationsfehler, Ihre eigene Kopie",
     "copySuccess" : "Kopieren erfolgreich",
     "copyToMyNotebook" : "In mein Notizbuch kopieren",

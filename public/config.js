@@ -38,6 +38,5 @@ var Config = {
     "lang": "zh-cn",
     "theme": "blue_pure",
     "view": "snippet",
-    "mdTheme": "githubx",
-    "dataPath": "D:/ProgramData/Leanote/dataDev"
+    "mdTheme": "githubx"
 };

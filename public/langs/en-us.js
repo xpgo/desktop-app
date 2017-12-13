@@ -29,6 +29,7 @@
     "cooperation": "Cooperation",
     "cooperationInfo": "Collaborate with friends to improve your knowledge.",
     "copy": "Copy to",
+    "copyInternalLink": "copy internal link",
     "copyFailed": "Copy failed",
     "copySuccess": "Copy success",
     "copyToMyNotebook": "Copy to my notebook",

@@ -620,6 +620,17 @@ $(function () {
         return preHeight < maxHeight ? preHeight : maxHeight;
     }
 
+    // xpgo
+    function openAttachExternally(fileId) {
+        var curNoteId = Note.curNoteId;
+        getAttachLocalPath(curNoteId, fileId, function (filePath) {
+            if (filePath) {
+                var newURL = "file:///" + filePath;
+                openExternal(newURL);
+            }
+        });
+    }
+
     // 内容下的a点击, 跳转
     $('#editorContent').on('click', 'a', function (e) {
         e.preventDefault();
@@ -630,19 +641,22 @@ $(function () {
             } else if (url.startsWith("file:///")) {
                 // added by xiaopan to open attachement directly
                 openExternal(url);
+            } else if (url.startsWith("leanote://note/gotoNote")) {
+                // added by xiaopan to open attachement directly
+                var reg = new RegExp("/note/gotoNote\\?id=([0-9a-zA-Z]{24})", 'g');
+                var result = reg.exec(url);
+                if (result) {
+                    var noteId = result[1];
+                    Note.openNote(noteId);
+                }
+                // openExternal(url);
             } else {
                 // added by xiaopan to open attachement directly
                 var reg = new RegExp("/file/getAttach\\?fileId=([0-9a-zA-Z]{24})", 'g');
                 var result = reg.exec(url);
                 if (result) {
-                    var curNoteId = Note.curNoteId;
                     var fileId = result[1];
-                    getAttachLocalPath(curNoteId, fileId, function (filePath) {
-                        if (filePath) {
-                            var newURL = "file:///" + filePath;
-                            openExternal(newURL);
-                        }
-                    });
+                    openAttachExternally(fileId);
                 }
             }
         }
@@ -652,24 +666,28 @@ $(function () {
     $('#preview-contents').on('click', 'a', function (e) {
         e.preventDefault();
         var url = $(this).attr('href');
+        console.log(url);
         if (isOtherSiteUrl(url)) {
             openExternal(url);
         } else if (url.startsWith("file:///")) {
             // added by xiaopan to open attachement directly
             openExternal(url);
+        } else if (url.startsWith("leanote://note/gotoNote")) {
+            // added by xiaopan to open attachement directly
+            var reg = new RegExp("/note/gotoNote\\?id=([0-9a-zA-Z]{24})", 'g');
+            var result = reg.exec(url);
+            if (result) {
+                var noteId = result[1];
+                Note.openNote(noteId);
+            }
+            // openExternal(url);
         } else {
             // added by xiaopan to open attachement directly
             var reg = new RegExp("/file/getAttach\\?fileId=([0-9a-zA-Z]{24})", 'g');
             var result = reg.exec(url);
             if (result) {
-                var curNoteId = Note.curNoteId;
                 var fileId = result[1];
-                getAttachLocalPath(curNoteId, fileId, function (filePath) {
-                    if (filePath) {
-                        var newURL = "file:///" + filePath;
-                        openExternal(newURL);
-                    }
-                });
+                openAttachExternally(fileId);
             }
         }
     });
