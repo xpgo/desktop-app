@@ -1,8 +1,11 @@
 var Common = require('common');
-
 var Evt = require('evt');
 var app = require('electron').remote.app; // .require('app');
-var basePath = app.getPath('appData') + '/leanote'; // /Users/life/Library/Application Support/Leanote'; // require('nw.gui').App.dataPath;
+var basePath = Config.dataPath; // /Users/life/Library/Application Support/Leanote'; // require('nw.gui').App.dataPath;
+var fs = require('fs');
+if (!fs.existsSync(basePath)) {
+	basePath = app.getPath('appData') + '/leanote';
+}
 Evt.setDataBasePath(basePath);
 
 // 所有service, 与数据库打交道

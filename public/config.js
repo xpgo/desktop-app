@@ -35,8 +35,8 @@ var Config = {
             "name": "日本語"
         }
     ],
-    "lang": "",
-    "theme": "blue_pure",
+    "lang": "zh-cn",
+    "theme": "pure_blue",
     "view": "snippet",
     "mdTheme": "githubx"
 };

@@ -18,6 +18,10 @@ Preview of the modified version of Leanote:
 - Upload image and attachment without size limits (Need to modify server app)
 - Double click or use `F4` to enter edit mode
 - Sticky note. An HTML note can be opened in a separated window (sticky note like), so you can use it to collect temporary text. The content in the sticky note will be saved when it is closed (or use `ctrl+s` to save it). Moreover, you can customize shortkeys in the sticky note to do more, i.e. insert data, time, horizontal rule and so on. 
+- Drag and drop file as attachment.
+- Insert an internal note link, and jump to it by click
+- Added navigation to previous and next note in the editor toolbar
+- Change local storage path by config settings
 
 ## Download
 Download the code and use electron to run this app.

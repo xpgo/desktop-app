@@ -29,6 +29,7 @@
     "cooperation": "协作",
     "cooperationInfo": "分享给好友的同时也可以让你的好友和你一起来完善它.",
     "Copy": "复制",
+    "copyInternalLink": "复制内部链接",
     "copyFailed": "对不起, 复制失败, 请自行复制",
     "copySuccess": "复制成功",
     "copyToMyNotebook": "复制到我的笔记本",

@@ -765,6 +765,7 @@ Note.setCurNoteId = function(noteId) {
     // console.trace('setCurNoteId: ' + noteId);
     Note.curNoteId = noteId;
     Note.inChangeNoteId = '';
+    Note.openHistoryNew(noteId);
 };
 // 清空curNoteId,
 Note.clearCurNoteId = function() {
@@ -1582,6 +1583,106 @@ Note.shareNote = function(target) {
 
     var noteId = $(target).attr("noteId");
     shareNoteOrNotebook(noteId, true);
+}
+
+//---------------------------
+// 后退和前进
+Note.openHistory = [];
+Note.openHistoryPos = -1;
+Note.openHistoryNav = false;
+Note.openHistoryNew = function (noteId) {
+    if (!Note.openHistoryNav) {
+        // added by click
+        var curPos = Note.openHistoryPos;
+        if (Note.openHistory[curPos] != noteId) {
+            Note.openHistory = Note.openHistory.slice(0, curPos + 1);
+            var histMax = 10;
+            if (Note.openHistory.length > histMax) {
+                var idx0 = Note.openHistory.length - histMax;
+                var idx1 = Note.openHistory.length;
+                Note.openHistory = Note.openHistory.slice(idx0, idx1);
+                curPos = Note.openHistory.length - 1;
+            }
+            Note.openHistory.push(noteId);
+            Note.openHistoryPos = curPos + 1;
+        }
+    } else {
+        Note.openHistoryNav = false;
+    }
+    // console.log(Note.openHistory.length);
+    // console.log(Note.openHistoryPos);
+    // disable sth
+    var isDiabled = (Note.openHistoryPos < 1);
+    if (isDiabled) {
+        $("#notePrevBtn").prop('disabled', true).css('opacity', 0.4);
+    } else {
+        $("#notePrevBtn").prop('disabled', false).css('opacity', 1.0);
+    }
+    isDiabled = (Note.openHistoryPos + 1 >= Note.openHistory.length);
+    if (isDiabled) {
+        $("#noteNextBtn").prop('disabled', true).css('opacity', 0.4);
+    } else {
+        $("#noteNextBtn").prop('disabled', false).css('opacity', 1.0);
+    }
+}
+
+Note.openHistoryPrev = function () {
+    var newPos = Note.openHistoryPos - 1;
+    if (newPos >= 0) {
+        Note.openHistoryNav = true;
+        var noteId = Note.openHistory[newPos];
+        Note.openHistoryPos = newPos;
+        Note.openNote(noteId);
+    }
+}
+
+Note.openHistoryNext = function () {
+    var newPos = Note.openHistoryPos + 1;
+    if (newPos < Note.openHistory.length) {
+        Note.openHistoryNav = true;
+        var noteId = Note.openHistory[newPos];
+        Note.openHistoryPos = newPos;
+        Note.openNote(noteId);
+    }
+}
+
+Note.openNoteByServerNoteId = function (serverNoteId) {
+    // console.log(serverNoteId);
+    NoteService.getNoteIdByServerNoteId(serverNoteId, function (noteId) {
+        if (noteId) {
+            Note.openNote(noteId);
+        }
+    });
+}
+
+// xpgo
+Note.openNote = function (noteId) {
+    // change to note
+    // copied from Pjax.changeNotebookAndNote
+    var note = Note.getNote(noteId);
+    if (!note) {
+        return;
+    }
+    var isShare = note.Perm != undefined;
+
+    var notebookId = note.NotebookId;
+    // 如果是在当前notebook下, 就不要转换notebook了
+    if (Notebook.curNotebookId == notebookId) {
+        // 不push state
+        Note.changeNoteForPjax(noteId, false);
+        return;
+    }
+
+    // 自己的
+    if (!isShare) {
+        // 先切换到notebook下, 得到notes列表, 再changeNote
+        Notebook.changeNotebook(notebookId, function (notes) {
+            Note.renderNotes(notes);
+            // 不push state
+            Note.changeNoteForPjax(noteId, false, true);
+        });
+        // 共享笔记
+    } else { }
 }
 
 //---------------------------
@@ -2426,6 +2527,25 @@ Note.initContextmenu = function() {
                 dialogOperateNotes({ notebooks: notebooks, func: 'copy' });
             }
         });
+        this.copyInternalLink = new gui.MenuItem({
+            label: getMsg("copyInternalLink"),
+            click: function (e) {
+                var { clipboard } = require('electron');
+                var noteId = null;
+                if (Note.inBatch) {
+                    var noteIds = Note.getBatchNoteIds();
+                    noteId = noteIds[0];
+                } else {
+                    noteId = $(self.target).attr('noteId');
+                }
+                NoteService.getServerNoteIdByNoteId(noteId, function (serverNoteId) {
+                    if (serverNoteId) {
+                        var linkStr = "leanote://note/gotoNote?id=" + serverNoteId;
+                        clipboard.writeText(linkStr);
+                    }
+                });
+            }
+        });
 
         function dialogOperateNotes(options) {
             $("#leanoteDialog #modalTitle").html(getMsg("selectNotebook"));
@@ -2462,6 +2582,7 @@ Note.initContextmenu = function() {
 
         this.menu.append(this.move);
         this.menu.append(this.copy);
+        this.menu.append(this.copyInternalLink);
 
         // user note menu
         var userNoteMenus = Api.getUserNoteMenus() || [];
@@ -2813,6 +2934,9 @@ var Attach = {
     // 添加附件, attachment_upload上传调用
     addAttach: function(attachInfo) {
         var self = this;
+        if (!self.loadedNoteAttachs[attachInfo.NoteId]) {
+            self.renderAttachs(attachInfo.NoteId);
+        }
         self.loadedNoteAttachs[attachInfo.NoteId].push(attachInfo);
         self.renderAttachs(attachInfo.NoteId);
         // TOOD 更新Note表
@@ -2881,6 +3005,10 @@ var Attach = {
 
 Note.getAttach = function(attachID) {
     return Attach.getAttach(attachID);
+}
+
+Note.addAttach = function (attachInfo) {
+    return Attach.addAttach(attachInfo);
 }
 
 // 批量操作
@@ -3515,6 +3643,14 @@ $(function() {
     // });
     $("#editBtn").click(function() {
         Note.toggleWriteableAndReadOnly();
+    });
+
+    $("#notePrevBtn").click(function () {
+        Note.openHistoryPrev();
+    });
+
+    $("#noteNextBtn").click(function () {
+        Note.openHistoryNext();
     });
 
     // note title 里按tab, 切换到编辑区
